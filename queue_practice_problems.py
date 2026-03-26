@@ -1,21 +1,29 @@
-# UC2 – Implement peek (front) operation to view the first element of the queue.
+# UC3 – Check if the queue is empty and handle underflow conditions.
 
 class Queue:
     """
     Queue implementation using Python list.
 
-    Supports enqueue, dequeue, and peek operations.
+    Supports enqueue, dequeue, peek, and is_empty operations.
     """
 
     def __init__(self) -> None:
         self.items = []
+
+    def is_empty(self) -> bool:
+        """
+        Check if queue is empty.
+
+        Time Complexity: O(1)
+        """
+        return len(self.items) == 0
 
     def enqueue(self, item) -> None:
         self.items.append(item)
         print(f"Enqueued: {item}")
 
     def dequeue(self):
-        if not self.items:
+        if self.is_empty():
             print("Queue Underflow. Cannot dequeue from empty queue.")
             return None
 
@@ -24,12 +32,7 @@ class Queue:
         return removed
 
     def peek(self):
-        """
-        Return the front element without removing it.
-
-        Time Complexity: O(1)
-        """
-        if not self.items:
+        if self.is_empty():
             print("Queue is empty. No front element.")
             return None
 
@@ -39,19 +42,21 @@ class Queue:
 def main() -> None:
     queue = Queue()
 
+    print(f"Is queue empty? {queue.is_empty()}")
+
     queue.enqueue(10)
     queue.enqueue(20)
-    queue.enqueue(30)
 
-    print(f"Front element (peek): {queue.peek()}")  # 10
+    print(f"Front element: {queue.peek()}")
 
     queue.dequeue()
-    print(f"Front after dequeue: {queue.peek()}")  # 20
+    queue.dequeue()
 
-    # Empty case
+    # Underflow cases
     queue.dequeue()
-    queue.dequeue()
-    print(f"Peek on empty queue: {queue.peek()}")
+    queue.peek()
+
+    print(f"Is queue empty? {queue.is_empty()}")
 
 
 if __name__ == "__main__":
