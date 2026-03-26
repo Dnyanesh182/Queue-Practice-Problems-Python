@@ -1,31 +1,20 @@
-# UC1 – Create a Queue class using list to perform basic enqueue and dequeue operations.
+# UC2 – Implement peek (front) operation to view the first element of the queue.
 
 class Queue:
     """
     Queue implementation using Python list.
 
-    Follows FIFO (First In First Out) principle.
+    Supports enqueue, dequeue, and peek operations.
     """
 
     def __init__(self) -> None:
-        # Internal container for queue elements
         self.items = []
 
     def enqueue(self, item) -> None:
-        """
-        Add element to rear of queue.
-
-        Time Complexity: O(1)
-        """
         self.items.append(item)
         print(f"Enqueued: {item}")
 
     def dequeue(self):
-        """
-        Remove element from front of queue.
-
-        Time Complexity: O(n)
-        """
         if not self.items:
             print("Queue Underflow. Cannot dequeue from empty queue.")
             return None
@@ -33,6 +22,18 @@ class Queue:
         removed = self.items.pop(0)
         print(f"Dequeued: {removed}")
         return removed
+
+    def peek(self):
+        """
+        Return the front element without removing it.
+
+        Time Complexity: O(1)
+        """
+        if not self.items:
+            print("Queue is empty. No front element.")
+            return None
+
+        return self.items[0]
 
 
 def main() -> None:
@@ -42,12 +43,15 @@ def main() -> None:
     queue.enqueue(20)
     queue.enqueue(30)
 
-    queue.dequeue()
-    queue.dequeue()
-    queue.dequeue()
+    print(f"Front element (peek): {queue.peek()}")  # 10
 
-    # Underflow case
     queue.dequeue()
+    print(f"Front after dequeue: {queue.peek()}")  # 20
+
+    # Empty case
+    queue.dequeue()
+    queue.dequeue()
+    print(f"Peek on empty queue: {queue.peek()}")
 
 
 if __name__ == "__main__":
