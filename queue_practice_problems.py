@@ -1,22 +1,25 @@
-# UC3 – Check if the queue is empty and handle underflow conditions.
+# UC4 – Implement size method to return the number of elements in the queue.
 
 class Queue:
     """
     Queue implementation using Python list.
 
-    Supports enqueue, dequeue, peek, and is_empty operations.
+    Supports enqueue, dequeue, peek, is_empty, and size operations.
     """
 
     def __init__(self) -> None:
         self.items = []
 
     def is_empty(self) -> bool:
+        return len(self.items) == 0
+
+    def size(self) -> int:
         """
-        Check if queue is empty.
+        Return number of elements in queue.
 
         Time Complexity: O(1)
         """
-        return len(self.items) == 0
+        return len(self.items)
 
     def enqueue(self, item) -> None:
         self.items.append(item)
@@ -42,21 +45,21 @@ class Queue:
 def main() -> None:
     queue = Queue()
 
-    print(f"Is queue empty? {queue.is_empty()}")
+    print(f"Initial size: {queue.size()}")
 
     queue.enqueue(10)
     queue.enqueue(20)
+    queue.enqueue(30)
 
-    print(f"Front element: {queue.peek()}")
+    print(f"Size after enqueue: {queue.size()}")
+
+    queue.dequeue()
+    print(f"Size after one dequeue: {queue.size()}")
 
     queue.dequeue()
     queue.dequeue()
 
-    # Underflow cases
-    queue.dequeue()
-    queue.peek()
-
-    print(f"Is queue empty? {queue.is_empty()}")
+    print(f"Final size: {queue.size()}")
 
 
 if __name__ == "__main__":
