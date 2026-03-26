@@ -1,85 +1,48 @@
-# UC8 – Implement circular queue with fixed size.
+# UC9 – Solve sliding window maximum problem using deque.
 
-class CircularQueue:
+from collections import deque
+
+
+def sliding_window_max(arr: list[int], k: int) -> list[int]:
     """
-    Circular Queue implementation using fixed-size array.
+    Find maximum of each sliding window of size k.
+
+    Time Complexity: O(n)
+    Space Complexity: O(k)
     """
+    if not arr or k <= 0:
+        return []
 
-    def __init__(self, size: int) -> None:
-        self.size = size
-        self.queue = [None] * size
-        self.front = -1
-        self.rear = -1
+    dq = deque()  # stores indices
+    result = []
 
-    def is_empty(self) -> bool:
-        return self.front == -1
+    for i in range(len(arr)):
+        # Remove indices out of window
+        while dq and dq[0] <= i - k:
+            dq.popleft()
 
-    def is_full(self) -> bool:
-        return (self.rear + 1) % self.size == self.front
+        # Remove smaller elements from rear
+        while dq and arr[dq[-1]] < arr[i]:
+            dq.pop()
 
-    def enqueue(self, item) -> None:
-        if self.is_full():
-            print("Queue Overflow. Cannot enqueue.")
-            return
+        dq.append(i)
 
-        if self.is_empty():
-            self.front = 0
+        # Add max to result when window is ready
+        if i >= k - 1:
+            result.append(arr[dq[0]])
 
-        self.rear = (self.rear + 1) % self.size
-        self.queue[self.rear] = item
-        print(f"Enqueued: {item}")
-
-    def dequeue(self):
-        if self.is_empty():
-            print("Queue Underflow. Cannot dequeue.")
-            return None
-
-        item = self.queue[self.front]
-
-        if self.front == self.rear:
-            # Queue becomes empty
-            self.front = self.rear = -1
-        else:
-            self.front = (self.front + 1) % self.size
-
-        print(f"Dequeued: {item}")
-        return item
-
-    def display(self) -> None:
-        if self.is_empty():
-            print("Queue is empty.")
-            return
-
-        i = self.front
-        elements = []
-
-        while True:
-            elements.append(self.queue[i])
-            if i == self.rear:
-                break
-            i = (i + 1) % self.size
-
-        print(elements)
+    return result
 
 
 def main() -> None:
-    cq = CircularQueue(5)
+    arr = [1, 3, -1, -3, 5, 3, 6, 7]
+    k = 3
 
-    cq.enqueue(10)
-    cq.enqueue(20)
-    cq.enqueue(30)
-    cq.enqueue(40)
-    cq.enqueue(50)  # Full
+    result = sliding_window_max(arr, k)
 
-    cq.display()
-
-    cq.dequeue()
-    cq.dequeue()
-
-    cq.enqueue(60)
-    cq.enqueue(70)
-
-    cq.display()
+    print(f"Input: {arr}")
+    print(f"Window size: {k}")
+    print(f"Sliding Window Maximum: {result}")
 
 
 if __name__ == "__main__":
