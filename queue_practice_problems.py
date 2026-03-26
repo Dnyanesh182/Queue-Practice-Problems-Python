@@ -1,48 +1,81 @@
-# UC9 – Solve sliding window maximum problem using deque.
+# UC10 – Implement queue using two stacks (advanced problem).
 
-from collections import deque
-
-
-def sliding_window_max(arr: list[int], k: int) -> list[int]:
+class QueueUsingStacks:
     """
-    Find maximum of each sliding window of size k.
+    Queue implementation using two stacks.
 
-    Time Complexity: O(n)
-    Space Complexity: O(k)
+    Maintains FIFO behavior using LIFO stacks.
     """
-    if not arr or k <= 0:
-        return []
 
-    dq = deque()  # stores indices
-    result = []
+    def __init__(self) -> None:
+        self.stack_in = []
+        self.stack_out = []
 
-    for i in range(len(arr)):
-        # Remove indices out of window
-        while dq and dq[0] <= i - k:
-            dq.popleft()
+    def is_empty(self) -> bool:
+        return not self.stack_in and not self.stack_out
 
-        # Remove smaller elements from rear
-        while dq and arr[dq[-1]] < arr[i]:
-            dq.pop()
+    def enqueue(self, item) -> None:
+        """
+        Add element to queue.
 
-        dq.append(i)
+        Time Complexity: O(1)
+        """
+        self.stack_in.append(item)
+        print(f"Enqueued: {item}")
 
-        # Add max to result when window is ready
-        if i >= k - 1:
-            result.append(arr[dq[0]])
+    def dequeue(self):
+        """
+        Remove element from queue.
 
-    return result
+        Amortized Time Complexity: O(1)
+        """
+        if self.is_empty():
+            print("Queue Underflow. Cannot dequeue.")
+            return None
+
+        # Transfer elements if needed
+        if not self.stack_out:
+            while self.stack_in:
+                self.stack_out.append(self.stack_in.pop())
+
+        removed = self.stack_out.pop()
+        print(f"Dequeued: {removed}")
+        return removed
+
+    def peek(self):
+        """
+        Get front element without removing.
+
+        Amortized Time Complexity: O(1)
+        """
+        if self.is_empty():
+            return None
+
+        if not self.stack_out:
+            while self.stack_in:
+                self.stack_out.append(self.stack_in.pop())
+
+        return self.stack_out[-1]
 
 
 def main() -> None:
-    arr = [1, 3, -1, -3, 5, 3, 6, 7]
-    k = 3
+    queue = QueueUsingStacks()
 
-    result = sliding_window_max(arr, k)
+    queue.enqueue(10)
+    queue.enqueue(20)
+    queue.enqueue(30)
 
-    print(f"Input: {arr}")
-    print(f"Window size: {k}")
-    print(f"Sliding Window Maximum: {result}")
+    print(f"Front element: {queue.peek()}")
+
+    queue.dequeue()
+    queue.dequeue()
+
+    print(f"Front after dequeue: {queue.peek()}")
+
+    queue.dequeue()
+
+    # Underflow case
+    queue.dequeue()
 
 
 if __name__ == "__main__":
