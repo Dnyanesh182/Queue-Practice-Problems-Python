@@ -1,63 +1,36 @@
-# UC6 – Reverse a queue using stack.
+# UC7 – Generate binary numbers from 1 to N using queue.
 
 from collections import deque
 
 
-class Queue:
+def generate_binary(n: int) -> list[str]:
     """
-    Queue implementation using deque for O(1) operations.
-    """
-
-    def __init__(self) -> None:
-        self.items = deque()
-
-    def is_empty(self) -> bool:
-        return len(self.items) == 0
-
-    def enqueue(self, item) -> None:
-        self.items.append(item)
-
-    def dequeue(self):
-        if self.is_empty():
-            return None
-        return self.items.popleft()
-
-    def display(self) -> None:
-        print(list(self.items))
-
-
-def reverse_queue(queue: Queue) -> None:
-    """
-    Reverse queue using stack.
+    Generate binary numbers from 1 to N using queue.
 
     Time Complexity: O(n)
     Space Complexity: O(n)
     """
-    stack = []
+    result = []
+    queue = deque()
 
-    # Step 1: Move all elements to stack
-    while not queue.is_empty():
-        stack.append(queue.dequeue())
+    queue.append("1")
 
-    # Step 2: Push back to queue (reversed)
-    while stack:
-        queue.enqueue(stack.pop())
+    for _ in range(n):
+        current = queue.popleft()
+        result.append(current)
+
+        queue.append(current + "0")
+        queue.append(current + "1")
+
+    return result
 
 
 def main() -> None:
-    queue = Queue()
+    n = 5
+    binaries = generate_binary(n)
 
-    # Add elements
-    for i in [1, 2, 3, 4, 5]:
-        queue.enqueue(i)
-
-    print("Original Queue:")
-    queue.display()
-
-    reverse_queue(queue)
-
-    print("Reversed Queue:")
-    queue.display()
+    print(f"Binary numbers from 1 to {n}:")
+    print(binaries)
 
 
 if __name__ == "__main__":
