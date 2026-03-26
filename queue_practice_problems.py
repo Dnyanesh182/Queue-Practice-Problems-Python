@@ -1,76 +1,63 @@
-# UC5 – Implement queue using collections.deque for optimized performance.
+# UC6 – Reverse a queue using stack.
 
 from collections import deque
 
 
 class Queue:
     """
-    Optimized Queue implementation using collections.deque.
-
-    Provides O(1) enqueue and dequeue operations.
+    Queue implementation using deque for O(1) operations.
     """
 
     def __init__(self) -> None:
-        # Using deque for efficient operations
         self.items = deque()
 
     def is_empty(self) -> bool:
         return len(self.items) == 0
 
-    def size(self) -> int:
-        return len(self.items)
-
     def enqueue(self, item) -> None:
-        """
-        Add element to rear of queue.
-
-        Time Complexity: O(1)
-        """
         self.items.append(item)
-        print(f"Enqueued: {item}")
 
     def dequeue(self):
-        """
-        Remove element from front of queue.
-
-        Time Complexity: O(1)
-        """
         if self.is_empty():
-            print("Queue Underflow. Cannot dequeue from empty queue.")
             return None
+        return self.items.popleft()
 
-        removed = self.items.popleft()
-        print(f"Dequeued: {removed}")
-        return removed
+    def display(self) -> None:
+        print(list(self.items))
 
-    def peek(self):
-        """
-        Return front element without removing it.
 
-        Time Complexity: O(1)
-        """
-        if self.is_empty():
-            print("Queue is empty. No front element.")
-            return None
+def reverse_queue(queue: Queue) -> None:
+    """
+    Reverse queue using stack.
 
-        return self.items[0]
+    Time Complexity: O(n)
+    Space Complexity: O(n)
+    """
+    stack = []
+
+    # Step 1: Move all elements to stack
+    while not queue.is_empty():
+        stack.append(queue.dequeue())
+
+    # Step 2: Push back to queue (reversed)
+    while stack:
+        queue.enqueue(stack.pop())
 
 
 def main() -> None:
     queue = Queue()
 
-    queue.enqueue(10)
-    queue.enqueue(20)
-    queue.enqueue(30)
+    # Add elements
+    for i in [1, 2, 3, 4, 5]:
+        queue.enqueue(i)
 
-    print(f"Front element: {queue.peek()}")
-    print(f"Queue size: {queue.size()}")
+    print("Original Queue:")
+    queue.display()
 
-    queue.dequeue()
-    queue.dequeue()
+    reverse_queue(queue)
 
-    print(f"Front after dequeue: {queue.peek()}")
-    print(f"Queue size: {queue.size()}")
+    print("Reversed Queue:")
+    queue.display()
 
 
 if __name__ == "__main__":
